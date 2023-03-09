@@ -1,7 +1,7 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka:password@localhost:8761/eureka
 # Application name and Service routes
 spring:
   application:
@@ -10,22 +10,22 @@ spring:
     gateway:
       routes:
         # Route to product_service
-      - id: product_service
+      - id: product-service
         uri: lb://product-service
         predicates:
           - Path=/api/product
         # Route to order_service
-      - id: order_service
-        uri: lb://order_service
+      - id: order-service
+        uri: lb://order-service
         predicates:
           - Path=/api/order
         # Route to inventory_service
-      - id: inventory_service
-        uri: lb://inventory_service
+      - id: inventory-service
+        uri: lb://inventory-service
         predicates:
           - Path=/api/inventory
         # Route to discovery server web
-      - id: discover_server
+      - id: discover-server
         uri: http://localhost:8761
         predicates:
           - Path=/eureka/web
@@ -37,6 +37,11 @@ spring:
         uri: http://localhost:8761
         predicates:
           - Path=/eureka/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/spring-boot-microservices-realm
 
 
 logging:
